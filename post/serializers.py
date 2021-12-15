@@ -4,14 +4,6 @@ from authentication.models import User
 from .models import Post, Like, Dislike
 
 
-class PostCreateSerializer(serializers.ModelSerializer):
-    owner = serializers.ReadOnlyField(source='owner.username')
-
-    class Meta:
-        model = Post
-        fields = ['title', 'body', 'owner']
-
-
 class PostSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
 
@@ -29,7 +21,6 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserActivitySerializer(serializers.ModelSerializer):
-
     class Meta:
         model = User
         fields = ['last_login']

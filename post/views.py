@@ -1,12 +1,12 @@
 import json
 
 from django.http import HttpResponse
-from rest_framework import generics, permissions, status, viewsets
+from rest_framework import generics, permissions
 
 from authentication.models import User
 
 from .models import Post, Like, Dislike
-from post.serializers import PostSerializer, PostCreateSerializer, LikeSerializer, DislikeSerializer, UserSerializer, \
+from post.serializers import PostSerializer, LikeSerializer, DislikeSerializer, UserSerializer, \
     UserActivitySerializer
 from .pagination import PostPageNumberPagination
 from .permissions import IsOwnerOrReadOnly
@@ -30,7 +30,7 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class PostCreateAPIView(generics.CreateAPIView):
     queryset = Post.objects.all()
-    serializer_class = PostCreateSerializer
+    serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
