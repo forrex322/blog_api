@@ -62,11 +62,13 @@ class ActivityUserView(generics.RetrieveAPIView):
 class PostLikeView(generics.CreateAPIView):
     queryset = Like.objects.all()
     serializer_class = LikeSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class PostDislikeView(generics.CreateAPIView):
     queryset = Dislike.objects.all()
     serializer_class = DislikeSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class PostAnaliticsLikesView(generics.ListAPIView):
