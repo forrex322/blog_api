@@ -1,12 +1,7 @@
-import jwt
-
-from datetime import datetime, timedelta
-
-from django.conf import settings
 from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager, PermissionsMixin
 )
-from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
+from rest_framework_simplejwt.tokens import AccessToken
 
 from django.db import models
 
@@ -65,15 +60,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.username
 
     def _generate_jwt_token(self):
-        dt = datetime.now() + timedelta(days=1)
-
-        token = jwt.encode({
-            'id': self.pk,
-            'exp': int(dt.strftime('%S'))
-        }, settings.SECRET_KEY, algorithm='HS256')
-
         user = User.objects.first()
         access_token = AccessToken.for_user(user)
-        refresh_token = RefreshToken.for_user(user)
 
         return str(access_token)

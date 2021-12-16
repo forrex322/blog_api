@@ -1,7 +1,8 @@
 import json
 
 from django.http import HttpResponse
-from rest_framework import generics, permissions
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from authentication.models import User
 
@@ -15,7 +16,7 @@ from .permissions import IsOwnerOrReadOnly
 class PostList(generics.ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permissions_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permissions_classes = [IsAuthenticatedOrReadOnly]
     pagination_class = PostPageNumberPagination
 
     def perform_create(self, serializer):
@@ -25,13 +26,13 @@ class PostList(generics.ListCreateAPIView):
 class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permissions_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+    permissions_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
 
 
 class PostCreateAPIView(generics.CreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
@@ -62,13 +63,13 @@ class ActivityUserView(generics.RetrieveAPIView):
 class PostLikeView(generics.CreateAPIView):
     queryset = Like.objects.all()
     serializer_class = LikeSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 class PostDislikeView(generics.CreateAPIView):
     queryset = Dislike.objects.all()
     serializer_class = DislikeSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 class PostAnaliticsLikesView(generics.ListAPIView):
